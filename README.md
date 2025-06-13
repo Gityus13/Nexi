@@ -1,0 +1,2 @@
+# Nexi
+Nexi powerful ai

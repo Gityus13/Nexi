@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEXI - AI Assistant</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4712/4712106.png" type="image/png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin: 0;
+      background: -webkit-linear-gradient(#ffffff, #00f7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #deployment-6642aa84-9ebd-431a-900f-1686822056e8 {
+      width: 100%;
+      max-width: 800px;
+      height: 600px;
+      margin: 20px auto;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🤖 NEXI – Your Smart Assistant</h1>
+  </header>
+
+  <div id="deployment-6642aa84-9ebd-431a-900f-1686822056e8"></div>
+  <script src="https://studio.pickaxe.co/api/embed/bundle.js" defer></script>
+
+  <!-- Hide "Powered by Pickaxe" using Shadow DOM hack -->
+  <script>
+    const tryRemoveBadge = () => {
+      const pickaxeContainer = document.querySelector('pickaxe-deployment');
+      if (!pickaxeContainer) {
+        return setTimeout(tryRemoveBadge, 500);
+      }
+
+      const shadow = pickaxeContainer.shadowRoot;
+      if (!shadow) {
+        return setTimeout(tryRemoveBadge, 500);
+      }
+
+      const badge = shadow.querySelector('.powered-by');
+      if (badge) {
+        badge.remove();
+        console.log('🚫 Removed "Powered by Pickaxe" badge.');
+      } else {
+        setTimeout(tryRemoveBadge, 500);
+      }
+    };
+
+    setTimeout(tryRemoveBadge, 1000); // Start the attempt after 1 second
+  </script>
+</body>
+</html>

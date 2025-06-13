@@ -6,9 +6,13 @@
   <title>NEXI - AI Assistant</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4712/4712106.png" type="image/png" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
+      font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: white;
       display: flex;
@@ -16,32 +20,102 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     header {
       padding: 20px;
       text-align: center;
+      animation: fadeInDown 1s ease-out;
     }
 
     header h1 {
       font-size: 2.8rem;
       margin: 0;
-      background: -webkit-linear-gradient(#ffffff, #00f7ff);
+      background: linear-gradient(to right, #ffffff, #00f7ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     #deployment-6642aa84-9ebd-431a-900f-1686822056e8 {
-      width: 100%;
+      width: 90%;
       max-width: 800px;
       height: 600px;
       margin: 20px auto;
       border-radius: 15px;
       overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    .nexi-fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #00f7ff, #008bba);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      z-index: 1000;
+    }
+
+    .nexi-fab:hover {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, #00d4ff, #007199);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ffffff22;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background: #ffffff44;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
   <header>
     <h1>🤖 NEXI – Your Smart Assistant</h1>
   </header>
@@ -49,29 +123,41 @@
   <div id="deployment-6642aa84-9ebd-431a-900f-1686822056e8"></div>
   <script src="https://studio.pickaxe.co/api/embed/bundle.js" defer></script>
 
-  <!-- Hide "Powered by Pickaxe" using Shadow DOM hack -->
+  <button class="nexi-fab" onclick="scrollToTop()">⬆️</button>
+
   <script>
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      if (body.classList.contains("dark")) {
+        body.classList.remove("dark");
+        body.style.background = "linear-gradient(135deg, #0f2027, #203a43, #2c5364)";
+        document.querySelector(".theme-toggle").textContent = "🌓 Theme";
+      } else {
+        body.classList.add("dark");
+        body.style.background = "linear-gradient(135deg, #d7d2cc, #304352)";
+        document.querySelector(".theme-toggle").textContent = "🌙 Dark";
+      }
+    }
+
+    // Hide "Powered by Pickaxe"
     const tryRemoveBadge = () => {
       const pickaxeContainer = document.querySelector('pickaxe-deployment');
-      if (!pickaxeContainer) {
+      if (!pickaxeContainer || !pickaxeContainer.shadowRoot) {
         return setTimeout(tryRemoveBadge, 500);
       }
-
-      const shadow = pickaxeContainer.shadowRoot;
-      if (!shadow) {
-        return setTimeout(tryRemoveBadge, 500);
-      }
-
-      const badge = shadow.querySelector('.powered-by');
+      const badge = pickaxeContainer.shadowRoot.querySelector('.powered-by');
       if (badge) {
-        badge.remove();
-        console.log('🚫 Removed "Powered by Pickaxe" badge.');
+        badge.style.display = 'none';
+        console.log('✅ "Powered by Pickaxe" badge hidden.');
       } else {
         setTimeout(tryRemoveBadge, 500);
       }
     };
-
-    setTimeout(tryRemoveBadge, 1000); // Start the attempt after 1 second
+    setTimeout(tryRemoveBadge, 1500);
   </script>
 </body>
 </html>
